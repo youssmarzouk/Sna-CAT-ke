@@ -15,15 +15,21 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-      
+
     - name: Set up Xcode
       uses: maxim-lobanov/setup-xcode@v1
       with:
         xcode-version: '15.4.0'  # Update to the appropriate Xcode version
+
+    - name: Boot Simulator
+      run: |
+        xcrun simctl shutdown all
+        xcrun simctl boot "iPhone 15"  # Replace with the desired simulator model
+        xcrun simctl bootstatus booted
         
     - name: Build
       run: |
-        xcrun --sdk iphonesimulator swiftc -framework SpriteKit -framework GameplayKit Direction.swift GameScene.swift Snake.swift -o SnakeGame
+        xcrun --sdk iphonesimulator swiftc -target x86_64-apple-ios14.0-simulator -framework SpriteKit -framework GameplayKit Direction.swift GameScene.swift Snake.swift -o SnakeGame
         # Compiles your Swift files into an executable named SnakeGame
         
     - name: Run
