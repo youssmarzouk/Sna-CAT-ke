@@ -29,13 +29,22 @@ jobs:
         
     - name: Build
       run: |
-        xcrun --sdk iphonesimulator swiftc -target x86_64-apple-ios14.0-simulator -framework SpriteKit -framework GameplayKit Direction.swift GameScene.swift Snake.swift -o SnakeGame
-        # Compiles your Swift files into an executable named SnakeGame
-        
-    - name: Run
-      run: |
-        xcrun simctl install booted ./SnakeGame
-        xcrun simctl launch booted com.yourcompany.SnakeGame
-        # Runs the compiled executable on a simulator
+        xcodebuild -project YourProjectName.xcodeproj -scheme YourSchemeName -sdk iphonesimulator -configuration Debug build
+        # Builds your project using the specified scheme and SDK
 
-    # Add more steps for testing, deployment, code signing, etc. if needed
+    - name: Test
+      run: |
+        xcodebuild test -project YourProjectName.xcodeproj -scheme YourSchemeName -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 15,OS=latest'
+        # Runs tests on the specified simulator
+
+    - name: Archive
+      run: |
+        xcodebuild -project YourProjectName.xcodeproj -scheme YourSchemeName -sdk iphonesimulator -configuration Release archive -archivePath $PWD/build/YourAppName.xcarchive
+        # Archives the build
+
+    - name: Export IPA
+      run: |
+        xcodebuild -exportArchive -archivePath $PWD/build/YourAppName.xcarchive -exportOptionsPlist ExportOptions.plist -exportPath $PWD/build
+        # Exports the archived build as an IPA file
+
+    # Additional steps for deployment, code signing, etc. can be added here if needed
