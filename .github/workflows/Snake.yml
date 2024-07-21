@@ -22,12 +22,12 @@ jobs:
         
     - name: Build
       run: |
-        swift build --package-path path/to/your/package
+        swift build --package-path ../
         # Adjust the path to your Package.swift file if needed
         
     - name: Test
       run: |
-        swift test --package path/to/your/package
+        swift test --package ../
         # Run tests if you have them
         
     # You can add more steps for deployment, code signing, etc. here if needed
