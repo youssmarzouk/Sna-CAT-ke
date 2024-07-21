@@ -19,16 +19,17 @@ jobs:
     - name: Set up Xcode
       uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: '15.4.0'  # Replace with the appropriate Xcode version if needed
+        xcode-version: '15.4.0'  # Update to the appropriate Xcode version
         
     - name: Build
       run: |
-        xcrun swiftc -sdk $(xcrun --show-sdk-path --sdk macosx) Direction.swift GameScene.swift Snake.swift -o SnakeGame
+        xcrun --sdk iphonesimulator swiftc -framework SpriteKit -framework GameplayKit Direction.swift GameScene.swift Snake.swift -o SnakeGame
         # Compiles your Swift files into an executable named SnakeGame
         
     - name: Run
       run: |
-        ./SnakeGame
-        # Runs the compiled executable
+        xcrun simctl install booted ./SnakeGame
+        xcrun simctl launch booted com.yourcompany.SnakeGame
+        # Runs the compiled executable on a simulator
 
     # Add more steps for testing, deployment, code signing, etc. if needed
